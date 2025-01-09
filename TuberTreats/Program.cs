@@ -20,8 +20,18 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+
 //add endpoints here
 
+
+
+
+
+
+
+
+
+////////////////////////////////////////
 app.Run();
 //don't touch or move this!
 public partial class Program { }
