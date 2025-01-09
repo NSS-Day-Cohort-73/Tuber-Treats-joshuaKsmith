@@ -1,3 +1,8 @@
+using TuberTreats.Models;
+using TuberTreats.Models.DTOs;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
