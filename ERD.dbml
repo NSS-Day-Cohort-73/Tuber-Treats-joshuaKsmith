@@ -4,7 +4,6 @@ Table TuberOrder {
     CustomerId int 
     TuberDriverId int 
     DeliveredOnDate DateTime 
-    Toppings "List<Topping>"
 }
 
 Table Topping {
@@ -21,14 +20,12 @@ Table TuberTopping {
 Table TuberDriver {
     Id int [pk]
     Name string
-    TuberDeliveries "List<TuberOrder>"
 }
 
 Table Customer {
     Id int [pk]
     Name string
     Address string
-    TuberOrders "List<TuberOrder>" 
 }
 
 ref: TuberOrder.TuberDriverId > TuberDriver.Id
