@@ -1,0 +1,37 @@
+Table TuberOrder {
+    Id int [pk]
+    OrderPlacedOnDate DateTime 
+    CustomerId int 
+    TuberDriverId int 
+    DeliveredOnDate DateTime 
+    Toppings "List<Topping>"
+}
+
+Table Topping {
+    Id int [pk]
+    Name string 
+}
+
+Table TuberTopping {
+    Id int [pk]
+    TuberOrderId int 
+    ToppingId int 
+}
+
+Table TuberDriver {
+    Id int [pk]
+    Name string
+    TuberDeliveries "List<TuberOrder>"
+}
+
+Table Customer {
+    Id int [pk]
+    Name string
+    Address string
+    TuberOrders "List<TuberOrder>" 
+}
+
+ref: TuberOrder.TuberDriverId > TuberDriver.Id
+ref: TuberOrder.CustomerId > Customer.Id
+ref: TuberTopping.TuberOrderId > TuberOrder.Id
+ref: TuberTopping.ToppingId > Topping.Id
