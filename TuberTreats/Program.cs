@@ -318,7 +318,20 @@ app.MapGet("/customers/{id}", (int id) =>
 //endpoint for adding a customer
 
 //endpoint for deleting a customer
-
+app.MapDelete("/customers/{id}", (int id) => 
+{
+    Customer customerToDelete = customers.FirstOrDefault(c => c.Id == id);
+    if (customerToDelete == null)
+    {
+        return Results.NotFound();
+    }
+    if (customerToDelete.Id != id)
+    {
+        return Results.BadRequest();
+    }
+    customers.Remove(customerToDelete);
+    return Results.NoContent();
+});
 
 
 // /tuberdrivers
