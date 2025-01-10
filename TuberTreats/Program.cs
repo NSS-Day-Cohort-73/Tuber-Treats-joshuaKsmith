@@ -191,6 +191,35 @@ app.MapGet("/tuberorders", () =>
 });
 
 //endpoint for getting an order by id
+app.MapGet("/tuberorders/{id}", (int id) => 
+{
+    TuberOrder order = tuberOrders.FirstOrDefault(to => to.Id == id);
+    if (order == null)
+    {
+        return Results.NotFound();
+    }
+    TuberDriver employee = tuberDrivers.FirstOrDefault(td => td.Id == order.TuberDriverId);
+    Customer customer = customers.FirstOrDefault(c => c.Id == order.CustomerId);
+    return Results.Ok(new TuberOrderDTO
+    {
+        Id = order.Id,
+        OrderPlacedOnDate = order.OrderPlacedOnDate,
+        CustomerId = order.CustomerId,
+        Customer = customer == null ? null : new CustomerDTO
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            Address = customer.Address
+        },
+        TuberDriverId = order.TuberDriverId,
+        TuberDriver = employee == null ? null : new TuberDriverDTO
+        {
+            Id = employee.Id,
+            Name = employee.Name,
+        },
+        DeliveredOnDate = order.DeliveredOnDate,
+    });
+});
 
 //endpoint for submitting a new order
 
