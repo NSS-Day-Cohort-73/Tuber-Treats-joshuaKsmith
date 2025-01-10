@@ -322,7 +322,16 @@ app.MapPost("/tubertoppings", (TuberTopping tuberTopping) =>
 });
 
 //endpoint for removing a topping from a tuberorder
-
+app.MapDelete("/tubertoppings/{id}", (int id) => 
+{
+    TuberTopping toppingToDelete = tuberToppings.FirstOrDefault(tt => tt.Id == id);
+    if (toppingToDelete == null)
+    {
+        return Results.NotFound();
+    }
+    tuberToppings.Remove(toppingToDelete);
+    return Results.NoContent();
+});
 
 
 // /customers
