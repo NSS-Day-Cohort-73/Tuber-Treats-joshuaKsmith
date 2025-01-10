@@ -167,7 +167,6 @@ app.MapGet("/tuberorders", () =>
     {
         TuberDriver employee = tuberDrivers.FirstOrDefault(td => td.Id == to.TuberDriverId);
         Customer customer = customers.FirstOrDefault(c => c.Id == to.CustomerId);
-        List<TuberTopping> tuberTopping = tuberToppings.Where(tt => tt.TuberOrderId == to.Id).ToList();
         return new TuberOrderDTO
         {
             Id = to.Id,
@@ -200,6 +199,13 @@ app.MapGet("/tuberorders/{id}", (int id) =>
     }
     TuberDriver employee = tuberDrivers.FirstOrDefault(td => td.Id == order.TuberDriverId);
     Customer customer = customers.FirstOrDefault(c => c.Id == order.CustomerId);
+    List<TuberTopping> tuberTopping = tuberToppings.Where(tt => tt.TuberOrderId == id).ToList();
+    List<Topping> topping = [];
+    foreach (TuberTopping tt in tuberTopping)
+    {
+        Topping toppingToAdd = toppings.FirstOrDefault(t => tt.ToppingId == t.Id);
+        topping.Add(toppingToAdd);
+    }
     return Results.Ok(new TuberOrderDTO
     {
         Id = order.Id,
@@ -218,6 +224,11 @@ app.MapGet("/tuberorders/{id}", (int id) =>
             Name = employee.Name,
         },
         DeliveredOnDate = order.DeliveredOnDate,
+        Toppings = topping.Select(t => new ToppingDTO
+        {
+            Id = t.Id,
+            Name = t.Name
+        }).ToList()
     });
 });
 
