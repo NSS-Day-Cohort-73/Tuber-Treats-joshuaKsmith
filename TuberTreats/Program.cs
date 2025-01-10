@@ -16,8 +16,8 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         Id = 2,
         OrderPlacedOnDate = DateTime.Today,
         CustomerId = 2,
-        TuberDriverId = null,
-        DeliveredOnDate = null,
+        TuberDriverId = 2,
+        DeliveredOnDate = DateTime.Now,
         Toppings = {}
     },
     new TuberOrder()
@@ -158,6 +158,92 @@ app.UseAuthorization();
 //add endpoints here
 
 
+// /tuberorders
+
+//endpoint for getting all orders
+app.MapGet("/tuberorders", () => 
+{
+    return tuberOrders.Select(to => 
+    {
+        TuberDriver employee = tuberDrivers.FirstOrDefault(td => td.Id == to.TuberDriverId);
+        Customer customer = customers.FirstOrDefault(c => c.Id == to.CustomerId);
+        List<TuberTopping> tuberTopping = tuberToppings.Where(tt => tt.TuberOrderId == to.Id).ToList();
+        return new TuberOrderDTO
+        {
+            Id = to.Id,
+            OrderPlacedOnDate = to.OrderPlacedOnDate,
+            CustomerId = to.CustomerId,
+            Customer = customer == null ? null : new CustomerDTO
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Address = customer.Address
+            },
+            TuberDriverId = to.TuberDriverId,
+            TuberDriver = employee == null ? null : new TuberDriverDTO
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+            },
+            DeliveredOnDate = to.DeliveredOnDate,
+        };
+    });
+});
+
+//endpoint for getting an order by id
+
+//endpoint for submitting a new order
+
+//endpoint for assigning a driver to an order
+
+//endpoint for completing an order
+
+
+
+// /toppings
+
+//endpoint for getting all toppings
+app.MapGet("/toppings", () => 
+{
+    return toppings.Select(t => new ToppingDTO
+    {
+        Id = t.Id,
+        Name = t.Name
+    });
+});
+
+
+//endpoint for getting a topping by id
+
+
+
+// /tubertoppings
+
+//endpoint for getting all tubertoppings
+
+//endpoint for adding a topping to a tuberorder
+
+//endpoint for removing a topping from a tuberorder
+
+
+
+// /customers
+
+//endpoint for getting all customers
+
+//endpoint for getting a customer by id
+
+//endpoint for adding a customer
+
+//endpoint for deleting a customer
+
+
+
+// /tuberdrivers
+
+//endpoint for getting all employees
+
+//endpoint for getting an employee by id
 
 
 
