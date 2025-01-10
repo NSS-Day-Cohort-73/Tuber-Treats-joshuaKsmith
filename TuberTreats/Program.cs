@@ -214,7 +214,19 @@ app.MapGet("/toppings", () =>
 
 
 //endpoint for getting a topping by id
-
+app.MapGet("/toppings/{id}", (int id) => 
+{
+    Topping topping = toppings.FirstOrDefault(t => t.Id == id);
+    if (topping == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(new ToppingDTO
+    {
+        Id = topping.Id,
+        Name = topping.Name
+    });
+});
 
 
 // /tubertoppings
