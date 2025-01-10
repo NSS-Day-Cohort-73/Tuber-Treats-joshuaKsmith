@@ -232,6 +232,15 @@ app.MapGet("/toppings/{id}", (int id) =>
 // /tubertoppings
 
 //endpoint for getting all tubertoppings
+app.MapGet("/tubertoppings", () =>
+{
+    return tuberToppings.Select(tt => new TuberToppingDTO
+    {
+        Id = tt.Id,
+        TuberOrderId = tt.TuberOrderId,
+        ToppingId = tt.ToppingId
+    });
+});
 
 //endpoint for adding a topping to a tuberorder
 
