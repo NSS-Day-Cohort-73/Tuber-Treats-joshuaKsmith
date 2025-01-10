@@ -308,6 +308,18 @@ app.MapGet("/tubertoppings", () =>
 });
 
 //endpoint for adding a topping to a tuberorder
+app.MapPost("/tubertoppings", (TuberTopping tuberTopping) => 
+{
+    tuberTopping.Id = tuberToppings.Max(tt => tt.Id) + 1;
+    tuberToppings.Add(tuberTopping);
+
+    return Results.Created($"/tubertoppings/{tuberTopping.Id}", new TuberToppingDTO
+    {
+        Id = tuberTopping.Id,
+        TuberOrderId = tuberTopping.TuberOrderId,
+        ToppingId = tuberTopping.ToppingId
+    });
+});
 
 //endpoint for removing a topping from a tuberorder
 
