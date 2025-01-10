@@ -244,6 +244,17 @@ app.MapPost("/tuberorders", (TuberOrder order) =>
 });
 
 //endpoint for assigning a driver to an order
+app.MapPut("/tuberorders/{id}", (int id, TuberOrder tuberOrder) => 
+{
+    TuberOrder orderToUpdate = tuberOrders.FirstOrDefault(to => to.Id == id);
+    if (orderToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    orderToUpdate.TuberDriverId = tuberOrder.TuberDriverId;
+    return Results.NoContent();
+});
+
 
 //endpoint for completing an order
 app.MapPost("/tuberorders/{id}/complete", (int id) => 
