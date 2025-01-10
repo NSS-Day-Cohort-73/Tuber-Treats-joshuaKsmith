@@ -222,6 +222,26 @@ app.MapGet("/tuberorders/{id}", (int id) =>
 });
 
 //endpoint for submitting a new order
+app.MapPost("/tuberorders", (TuberOrder order) => 
+{
+    order.Id = tuberOrders.Max(to => to.Id) + 1;
+    order.OrderPlacedOnDate = DateTime.Now;
+    tuberOrders.Add(order);
+    Customer customer = customers.FirstOrDefault(c => c.Id == order.CustomerId);
+
+    return Results.Created($"/tuberorders/{order.Id}", new TuberOrderDTO
+    {
+        Id = order.Id,
+        OrderPlacedOnDate = order.OrderPlacedOnDate,
+        CustomerId = order.CustomerId,
+        Customer = customer == null ? null : new CustomerDTO
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            Address = customer.Address
+        }
+    });
+});
 
 //endpoint for assigning a driver to an order
 
