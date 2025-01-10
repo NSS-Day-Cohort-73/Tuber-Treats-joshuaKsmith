@@ -242,6 +242,15 @@ app.MapGet("/toppings/{id}", (int id) =>
 // /customers
 
 //endpoint for getting all customers
+app.MapGet("/customers", () => 
+{
+    return customers.Select(c => new CustomerDTO
+    {
+        Id = c.Id,
+        Name = c.Name,
+        Address = c.Address
+    });
+});
 
 //endpoint for getting a customer by id
 
