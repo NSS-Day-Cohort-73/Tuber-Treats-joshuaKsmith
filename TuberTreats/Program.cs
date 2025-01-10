@@ -254,9 +254,38 @@ app.MapGet("/toppings/{id}", (int id) =>
 // /tuberdrivers
 
 //endpoint for getting all employees
+app.MapGet("/tuberdrivers", () => 
+{
+    return tuberDrivers.Select(td => new TuberDriverDTO
+    {
+        Id = td.Id,
+        Name = td.Name
+    });
+});
 
 //endpoint for getting an employee by id
-
+app.MapGet("/tuberDrivers/{id}", (int id) => 
+{
+    TuberDriver employee = tuberDrivers.FirstOrDefault(td => td.Id == id);
+    if (employee == null)
+    {
+        return Results.NotFound();
+    }
+    List<TuberOrder> deliveries = tuberOrders.Where(to => to.TuberDriverId == id).ToList(); 
+    return Results.Ok(new TuberDriverDTO
+    {
+        Id = employee.Id,
+        Name = employee.Name,
+        TuberDeliveries = deliveries.Select(d => new TuberOrderDTO
+        {
+            Id = d.Id,
+            OrderPlacedOnDate = d.OrderPlacedOnDate,
+            CustomerId = d.CustomerId,
+            TuberDriverId = d.TuberDriverId,
+            DeliveredOnDate = d.DeliveredOnDate
+        }).ToList()
+    });
+});
 
 
 
