@@ -316,6 +316,17 @@ app.MapGet("/customers/{id}", (int id) =>
 });
 
 //endpoint for adding a customer
+app.MapPost("/customers", (Customer customer) => 
+{
+    customer.Id = customers.Max(c => c.Id) + 1;
+    customers.Add(customer);
+    return Results.Created($"/customers/{customer.Id}", new CustomerDTO
+    {
+        Id = customer.Id,
+        Name = customer.Name,
+        Address = customer.Address
+    });
+});
 
 //endpoint for deleting a customer
 app.MapDelete("/customers/{id}", (int id) => 
