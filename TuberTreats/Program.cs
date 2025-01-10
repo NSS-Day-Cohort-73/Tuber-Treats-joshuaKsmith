@@ -253,6 +253,29 @@ app.MapGet("/customers", () =>
 });
 
 //endpoint for getting a customer by id
+app.MapGet("/customers/{id}", (int id) => 
+{
+    Customer customer = customers.FirstOrDefault(c => c.Id == id);
+    if (customer == null)
+    {
+        return Results.NotFound();
+    }
+    List<TuberOrder> orders = tuberOrders.Where(to => to.TuberDriverId == id).ToList();
+    return Results.Ok(new CustomerDTO
+    {
+        Id = customer.Id,
+        Name = customer.Name,
+        Address = customer.Address,
+        TuberOrders = orders.Select(o => new TuberOrderDTO
+        {
+            Id = o.Id,
+            OrderPlacedOnDate = o.OrderPlacedOnDate,
+            CustomerId = o.CustomerId,
+            TuberDriverId = o.TuberDriverId,
+            DeliveredOnDate = o.DeliveredOnDate
+        }).ToList()
+    });
+});
 
 //endpoint for adding a customer
 
