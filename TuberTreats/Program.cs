@@ -246,7 +246,12 @@ app.MapPost("/tuberorders", (TuberOrder order) =>
 //endpoint for assigning a driver to an order
 
 //endpoint for completing an order
-
+app.MapPost("/tuberorders/{id}/complete", (int id) => 
+{
+    TuberOrder orderToComplete = tuberOrders.FirstOrDefault(to => to.Id == id);
+    orderToComplete.DeliveredOnDate = DateTime.Now;
+    return Results.NoContent();
+});
 
 
 // /toppings
